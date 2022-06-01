@@ -1,5 +1,6 @@
 name: BrendanMC
 version: 1.0
+api-version: 1.18
 main: us.westley.brendan.BrendanMC.BrendanMC
 commands:
   givetool:

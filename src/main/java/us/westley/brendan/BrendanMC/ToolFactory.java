@@ -12,13 +12,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
+import static org.bukkit.Bukkit.getServer;
+
 public interface ToolFactory {
-    static ItemStack getTool(ItemFactory itemFactory, String blockTranslationKey) {
+    static ItemStack getTool(String blockTranslationKey) {
         // Create item.
         ItemStack item = new ItemStack(Material.STICK);
 
         // Add lore and set name.
-        ItemMeta meta = itemFactory.getItemMeta(Material.STICK);
+        ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text("Configurator", TextColor.color(0, 255, 0)));
         meta.lore(List.of(
                 Component.text("Right-click on a ", TextColor.color(255, 255, 255))

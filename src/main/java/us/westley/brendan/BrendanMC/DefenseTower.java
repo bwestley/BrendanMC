@@ -2,6 +2,7 @@ package us.westley.brendan.BrendanMC;
 
 import org.bukkit.Location;
 import org.bukkit.entity.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class DefenseTower implements Serializable {
     private static final long serialVersionUID = 4550156864234411752L;
 
     public final SerializableLocation location;
-    public final double range;
+    public double range;
     public final double damage;
     public final EnumSet<DefenseTowerTarget> targets;
     public final UUID owner;
@@ -33,11 +34,11 @@ public class DefenseTower implements Serializable {
 
     public boolean isEnemy(Entity entity) {
         return entity instanceof Damageable && ( // entity can be damaged.
-                targets.contains(DefenseTowerTarget.PETS) // Turret targets pets.
+                targets.contains(DefenseTowerTarget.PET) // Turret targets pets.
                         && entity instanceof Tameable // entity is tamable.
                         && ((Tameable) entity).getOwnerUniqueId() != owner // entity was not tamed by the turret's owner.
                         && !alliedPlayers.contains(((Tameable) entity).getOwnerUniqueId()) // entity was not tamed by an allied player.
-                || targets.contains(DefenseTowerTarget.ANIMALS) // Turret targets animals.
+                || targets.contains(DefenseTowerTarget.ANIMAL) // Turret targets animals.
                         && (entity instanceof Animals || entity instanceof Ambient) // entity is an animal (include bats).
                 || targets.contains(DefenseTowerTarget.HOSTILE) // Turret targets hostile mobs.
                         && entity instanceof Monster // entity is a monster.
@@ -48,7 +49,7 @@ public class DefenseTower implements Serializable {
         );
     }
 
-    public boolean canTarget(Entity entity) {
+    public boolean canTarget(@NotNull Entity entity) {
         try {
             return entity.getLocation().distance(location.getLocation()) <= range && isEnemy(entity); // entity is within range and an enemy.
         } catch (IllegalArgumentException e) {

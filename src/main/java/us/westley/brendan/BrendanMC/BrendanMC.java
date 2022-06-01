@@ -48,7 +48,7 @@ public class BrendanMC extends JavaPlugin {
             if (material == null) blockTranslationKey = "block.minecraft.diamond_block";
             else blockTranslationKey = material.translationKey();
         }
-        tool = ToolFactory.getTool(getServer().getItemFactory(), blockTranslationKey);
+        tool = ToolFactory.getTool(blockTranslationKey);
 
         // Register event listeners.
         getServer().getPluginManager().registerEvents(new ToolListener(this), this);
