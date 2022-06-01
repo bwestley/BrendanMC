@@ -1,0 +1,10 @@
+name: BrendanMC
+version: 1.0
+main: us.westley.brendan.BrendanMC.BrendanMC
+commands:
+  givetool:
+    description: Give the BrendanMC tool.
+    usage: /givetool [user]
+    permission: brendanmc.givetool
+depend:
+  - NBTAPI
