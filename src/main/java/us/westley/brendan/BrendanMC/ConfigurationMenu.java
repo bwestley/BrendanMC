@@ -128,10 +128,17 @@ public class ConfigurationMenu {
                 inventory.setItem(31, createGUIItem(Material.WITHER_ROSE, createComponent("Remove"), false));
 
                 // Destroy
-                inventory.setItem(53, createGUIItem(
-                        Material.RED_CONCRETE,
+                inventory.setItem(52, createGUIItem(
+                        Material.RED_WOOL,
                         Component.text("Destroy", TextColor.color(255, 0, 0)),
                         true
+                ));
+                
+                // Exit
+                inventory.setItem(53, createGUIItem(
+                        Material.RED_CONCRETE,
+                        createComponent("Exit"),
+                        false
                 ));
             }
             case ADD_ALLY -> {
@@ -167,8 +174,8 @@ public class ConfigurationMenu {
                 // Back
                 inventory.setItem(53, createGUIItem(
                         Material.RED_CONCRETE,
-                        Component.text("Back", TextColor.color(255, 0, 0)),
-                        true
+                        createComponent("Back"),
+                        false
                 ));
             }
             case REMOVE_ALLY -> {
@@ -203,8 +210,8 @@ public class ConfigurationMenu {
                 // Back
                 inventory.setItem(53, createGUIItem(
                         Material.RED_CONCRETE,
-                        Component.text("Back", TextColor.color(255, 0, 0)),
-                        true
+                        createComponent("Back"),
+                        false
                 ));
             }
             default -> throw new IllegalStateException("Unexpected value: " + configurationState);
@@ -261,7 +268,7 @@ public class ConfigurationMenu {
                     case 31 -> configurationState = ConfigurationState.REMOVE_ALLY;
 
                     // Destroy
-                    case 53 -> {
+                    case 52 -> {
                         inventory.close();
                         defenseTower.location.getLocation().getBlock().breakNaturally();
                         plugin.defenseTowers.defenseTowers.remove(defenseTower);
@@ -269,9 +276,16 @@ public class ConfigurationMenu {
                         refresh = false;
                     }
 
+                    // Exit
+                    case 53 -> {
+                        inventory.close();
+                        refresh = false;
+                    }
+
                     default -> refresh = false;
                 }
             }
+
             case ADD_ALLY -> {
                 if (slot == 53) configurationState = ConfigurationState.MAIN;
                 else if (slot >= playerSelection.size()) refresh = false;
@@ -286,6 +300,7 @@ public class ConfigurationMenu {
                     ));
                 }
             }
+
             case REMOVE_ALLY -> {
                 if (slot == 53) configurationState = ConfigurationState.MAIN;
                 else if (slot >= playerSelection.size()) refresh = false;
@@ -300,6 +315,7 @@ public class ConfigurationMenu {
                     ));
                 }
             }
+
             default -> throw new IllegalStateException("Unexpected value: " + configurationState);
         }
 
