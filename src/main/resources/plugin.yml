@@ -9,3 +9,4 @@ commands:
     permission: brendanmc.givetool
 depend:
   - NBTAPI
+  - ProtocolLib

@@ -56,4 +56,9 @@ public class DefenseTower implements Serializable {
             return false;
         }
     }
+
+    public void toggleTarget(DefenseTowerTarget target) {
+        if (targets.contains(target)) targets.remove(target);
+        else targets.add(target);
+    }
 }

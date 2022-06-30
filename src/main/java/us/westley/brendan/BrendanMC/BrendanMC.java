@@ -1,21 +1,26 @@
 package us.westley.brendan.BrendanMC;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class BrendanMC extends JavaPlugin {
     FileConfiguration config = getConfig();
-    Logger logger = getLogger();
+    public Logger logger = getLogger();
+    SignMenuFactory signMenuFactory;
 
     public DefenseTowers defenseTowers;
     ItemStack tool;
@@ -31,6 +36,7 @@ public class BrendanMC extends JavaPlugin {
                 "S", "STICK",
                 "O", "OBSIDIAN"
         ));
+        config.addDefault("dataSaveInterval", 1200);
         config.options().copyDefaults(true);
         saveConfig();
 
@@ -50,6 +56,9 @@ public class BrendanMC extends JavaPlugin {
         }
         tool = ToolFactory.getTool(blockTranslationKey);
 
+        // Create sign menu factory.
+        signMenuFactory = new SignMenuFactory(this);
+
         // Register event listeners.
         getServer().getPluginManager().registerEvents(new ToolListener(this), this);
 
@@ -60,6 +69,14 @@ public class BrendanMC extends JavaPlugin {
 
         // Register commands.
         Objects.requireNonNull(getCommand("givetool")).setExecutor(new CommandGiveTool(this));
+
+        // Schedule data saving.
+        getServer().getScheduler().runTaskTimer(
+                this,
+                () -> defenseTowers.saveData(new File(dataFile)),
+                config.getInt("dataSaveInterval"),
+                config.getInt("dataSaveInterval")
+        );
 
         logger.info("BrendanMC enabled.");
     }
@@ -119,5 +136,14 @@ public class BrendanMC extends JavaPlugin {
             logger.warning("Server did not add recipe.");
 
         return success;
+    }
+
+    public static @NotNull String getUsername(@NotNull OfflinePlayer player) {
+        String name = player.getName();
+        return name == null ? "{" + player.getUniqueId() + "}" : name;
+    }
+
+    public static @NotNull String getUsername(@NotNull UUID uuid) {
+        return getUsername(Bukkit.getOfflinePlayer(uuid));
     }
 }
