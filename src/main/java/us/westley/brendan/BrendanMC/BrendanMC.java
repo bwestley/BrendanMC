@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 public class BrendanMC extends JavaPlugin {
     FileConfiguration config = getConfig();
     public Logger logger = getLogger();
-    SignMenuFactory signMenuFactory;
 
     public DefenseTowers defenseTowers;
     ItemStack tool;
@@ -55,9 +54,6 @@ public class BrendanMC extends JavaPlugin {
             else blockTranslationKey = material.translationKey();
         }
         tool = ToolFactory.getTool(blockTranslationKey);
-
-        // Create sign menu factory.
-        signMenuFactory = new SignMenuFactory(this);
 
         // Register event listeners.
         getServer().getPluginManager().registerEvents(new ToolListener(this), this);
